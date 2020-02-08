@@ -20,6 +20,9 @@ import com.atanu.spring.product.dto.QueryPageable;
 import com.atanu.spring.product.dto.QuerySearch;
 
 /**
+ * This is the Specification with {@link QueryPageable} that allow to
+ * filter/search with specific column and value
+ * 
  * @author Atanu Bhowmick
  *
  */
@@ -30,22 +33,48 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 	private QueryPageable queryPageable;
 	private StatusEnum activeStatus;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param queryPageable
+	 * @param activeStatus
+	 */
 	public QueryPageableSpecification(QueryPageable queryPageable, StatusEnum activeStatus) {
 		this.queryPageable = queryPageable;
 		this.activeStatus = activeStatus;
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Ovrriding to return custom Predicate criteria to perform Filter and Search
+	 */
 	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
 		// For Active check. Equivalent to soft delete in database.
-		Predicate predicate = criteriaBuilder.equal(root.get("isActive"), activeStatus.getValue());
+		Predicate predicate = criteriaBuilder.equal(root.get("activeStatus"), activeStatus.getValue());
 
 		// ------ Filter ------
-		Predicate filterPredicate = null;
+		predicate = this.filterPredicate(predicate, root, criteriaBuilder);
+
+		// ------ Search ------
+		predicate = this.searchPredicate(predicate, root, criteriaBuilder);
+
+		return predicate;
+	}
+
+	/**
+	 * This method provide the {@link Predicate} for filters
+	 * 
+	 * @param predicate
+	 * @param root
+	 * @param criteriaBuilder
+	 * @return Predicate
+	 */
+	@SuppressWarnings("unchecked")
+	private Predicate filterPredicate(Predicate predicate, Root<T> root, CriteriaBuilder criteriaBuilder) {
 		if (null != queryPageable && !CollectionUtils.isEmpty(queryPageable.getFilters())) {
 			for (QueryFilter filter : queryPageable.getFilters()) {
+				Predicate filterPredicate = null;
 				String column = filter.getFilterColumn();
 				Object value = filter.getFilterValue();
 				switch (filter.getFilterOperator()) {
@@ -75,8 +104,19 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 				}
 			}
 		}
+		return predicate;
+	}
 
-		// ------ Search ------
+	/**
+	 * This method provide the {@link Predicate} for searches
+	 * 
+	 * @param predicate
+	 * @param root
+	 * @param criteriaBuilder
+	 * @return Predicate
+	 */
+	@SuppressWarnings("unchecked")
+	private Predicate searchPredicate(Predicate predicate, Root<T> root, CriteriaBuilder criteriaBuilder) {
 		List<Predicate> searchPredicates = null;
 		if (null != queryPageable && !CollectionUtils.isEmpty(queryPageable.getSearches())) {
 			searchPredicates = new ArrayList<>();
@@ -100,8 +140,6 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 					.or(searchPredicates.toArray(new Predicate[searchPredicates.size()]));
 			predicate = criteriaBuilder.and(predicate, searchPredicate);
 		}
-
 		return predicate;
 	}
-
 }

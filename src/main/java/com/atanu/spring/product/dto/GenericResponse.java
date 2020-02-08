@@ -21,7 +21,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenericResponse<T extends Serializable> implements Serializable {
+public class GenericResponse<T> implements Serializable {
 
 	private static final long serialVersionUID = 1090351768369181315L;
 

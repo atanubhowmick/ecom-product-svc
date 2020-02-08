@@ -14,10 +14,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * This entity class is mapped with the table PRODUCT_DETAILS in database
+ * This entity class is mapped with the table CATEGORY_DETAILS in database
  * 
+ * @see ProductEntity
  * @see BrandEntity
- * @see CategoryEntity
  * @see ColourEntity
  * 
  * @author Atanu Bhowmick
@@ -26,20 +26,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT_DETAILS")
-public class ProductEntity extends BaseEntity {
+@Table(name = "CATEGORY_DETAILS")
+public class CategoryEntity extends BaseEntity {
 
-	private static final long serialVersionUID = -7149032080137456750L;
+	private static final long serialVersionUID = -4723499017508681913L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "PRODUCT_ID")
-	private Long productId;
+	@Column(name = "CATEGORY_ID")
+	private Long categoryId;
 
-	@Column(name = "PRODUCT_NAME")
-	private String productName;
-
-	@Column(name = "PRODUCT_DESC")
-	private String productDesc;
-
+	@Column(name = "CATEGORY_NAME")
+	private String categoryName;
 }

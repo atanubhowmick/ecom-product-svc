@@ -9,6 +9,9 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
+ * JPA Auditing enabled. Now exposing {@link ProductAuditAware} as
+ * {@link AuditorAware} bean
+ * 
  * @author Atanu Bhowmick
  *
  */
@@ -16,6 +19,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class AuditConfig {
 
+	/**
+	 * 
+	 * @return {@link ProductAuditAware}
+	 */
 	@Bean
 	public AuditorAware<Long> auditorProvider() {
 		return new ProductAuditAware();

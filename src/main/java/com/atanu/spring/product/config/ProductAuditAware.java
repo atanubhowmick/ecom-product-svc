@@ -10,6 +10,8 @@ import org.springframework.data.domain.AuditorAware;
 import com.atanu.spring.product.constant.ProductConstant;
 
 /**
+ * Custom AuditAware for Product Service
+ * 
  * @author Atanu Bhowmick
  *
  */

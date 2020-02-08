@@ -3,7 +3,13 @@
  */
 package com.atanu.spring.product.constant;
 
+import com.atanu.spring.product.repository.QueryPageableSpecification;
+
 /**
+ * This enum contains all the operator to perform the Filter and Search operation.
+ * 
+ * @see QueryPageableSpecification
+ * 
  * @author Atanu Bhowmick
  *
  */

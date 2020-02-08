@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.stereotype.Service;
 
 import com.atanu.spring.product.constant.StatusEnum;
 import com.atanu.spring.product.dto.ProductDTO;
@@ -24,6 +25,7 @@ import com.atanu.spring.product.repository.QueryPageableSpecification;
  * @author Atanu Bhowmick
  *
  */
+@Service
 public class ProductServiceImpl implements ProductService<ProductDTO, Long> {
 
 	@Autowired
@@ -51,7 +53,7 @@ public class ProductServiceImpl implements ProductService<ProductDTO, Long> {
 	}
 
 	/**
-	 * THis method is to convert from ProductEntity to ProductDTO
+	 * This method is to convert from ProductEntity to ProductDTO
 	 * 
 	 * @param entity
 	 * @return ProductDTO

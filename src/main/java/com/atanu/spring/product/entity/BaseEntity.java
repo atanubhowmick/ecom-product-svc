@@ -23,6 +23,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * Base entity with auditable columns
+ * 
  * @author Atanu Bhowmick
  *
  */

@@ -25,6 +25,12 @@ public class ProductExceptionHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductExceptionHandler.class);
 
+	/**
+	 * Method to handle {@link ProductException} and return error response
+	 * 
+	 * @param ex
+	 * @return ResponseEntity
+	 */
 	@ExceptionHandler(ProductException.class)
 	public ResponseEntity<GenericResponse<?>> handleProductException(ProductException ex) {
 		logger.error("Handling Product Exception... ", ex);
@@ -33,6 +39,12 @@ public class ProductExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	/**
+	 * Method to handle {@link Exception} and return error response
+	 * 
+	 * @param ex
+	 * @return ResponseEntity
+	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<GenericResponse<?>> handleException(Exception ex) {
 		logger.error("Handling Exception... ", ex);
