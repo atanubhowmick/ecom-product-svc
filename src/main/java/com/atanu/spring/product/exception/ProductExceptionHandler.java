@@ -20,7 +20,7 @@ import com.atanu.spring.product.dto.GenericResponse;
 @ControllerAdvice
 public class ProductExceptionHandler {
 
-	private static final String UNEXPECTED_ERROR_CODE = "EU001";
+	private static final String UNEXPECTED_ERROR_CODE = "PE500";
 	private static final String UNEXPECTED_ERROR_MSG = "Internal Server Error. Please try again later!";
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductExceptionHandler.class);
