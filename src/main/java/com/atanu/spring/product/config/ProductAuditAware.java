@@ -5,7 +5,6 @@ package com.atanu.spring.product.config;
 
 import java.util.Optional;
 
-import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.data.domain.AuditorAware;
 
 import com.atanu.spring.product.constant.ProductConstant;

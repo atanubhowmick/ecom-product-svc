@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
-import com.atanu.spring.product.constant.ActiveStatusEnum;
+import com.atanu.spring.product.constant.StatusEnum;
 import com.atanu.spring.product.dto.QueryFilter;
 import com.atanu.spring.product.dto.QueryPageable;
 import com.atanu.spring.product.dto.QuerySearch;
@@ -28,9 +28,9 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 	private static final long serialVersionUID = -42694488014989098L;
 
 	private QueryPageable queryPageable;
-	private ActiveStatusEnum activeStatus;
+	private StatusEnum activeStatus;
 
-	public QueryPageableSpecification(QueryPageable queryPageable, ActiveStatusEnum activeStatus) {
+	public QueryPageableSpecification(QueryPageable queryPageable, StatusEnum activeStatus) {
 		this.queryPageable = queryPageable;
 		this.activeStatus = activeStatus;
 	}

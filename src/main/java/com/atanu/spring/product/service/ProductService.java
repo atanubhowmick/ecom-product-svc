@@ -17,7 +17,7 @@ public interface ProductService<T, K> {
 
 	T get(K k);
 
-	Page<T> get(QueryPageable pageable);
+	Page<T> get(QueryPageable queryPageable);
 
 	List<T> getAll();
 
