@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.atanu.spring.product;
+package com.atanu.spring.product.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

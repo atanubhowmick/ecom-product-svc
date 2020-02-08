@@ -6,6 +6,7 @@ package com.atanu.spring.product.dto;
 import java.io.Serializable;
 
 import com.atanu.spring.product.constant.QueryFilterEnum;
+import com.atanu.spring.product.constant.QueryOperatorEnum;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,6 @@ public class QueryFilter implements Serializable {
 
 	private QueryFilterEnum filterBy;
 	private Object filterValue;
-	private String filterOperator;
+	private QueryOperatorEnum filterOperator;
 	private String filterColumn;
 }
