@@ -10,7 +10,10 @@ package com.atanu.spring.product.constant;
 public enum ErrorCode {
 
 	PE001("No Product found with the given Id"), 
-	PE002("No Search result found");
+	PE002("No Search result found"),
+	PE003("Invalid Request. Page cannot be less than 1."),
+	PE004("Invalid Request. Size cannot be less than 1."),
+	PE005("Invalid Request. Some fields are missing.");
 
 	private String errorMsg;
 

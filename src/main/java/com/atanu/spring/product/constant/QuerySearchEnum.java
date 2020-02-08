@@ -9,7 +9,7 @@ package com.atanu.spring.product.constant;
  */
 public enum QuerySearchEnum {
 
-	BRAND("brandId");
+	PRODUCT_NAME("productName");
 
 	private String column;
 

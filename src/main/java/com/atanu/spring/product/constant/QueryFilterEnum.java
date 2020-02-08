@@ -8,7 +8,7 @@ package com.atanu.spring.product.constant;
  *
  */
 public enum QueryFilterEnum {
-	BRAND("brandId");
+	PRODUCT_NAME("productName");
 
 	private String column;
 

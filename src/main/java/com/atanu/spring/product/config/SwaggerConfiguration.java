@@ -37,7 +37,7 @@ public class SwaggerConfiguration {
 	private ApiInfo apiEndPointsInfo() {
 		return new ApiInfoBuilder().title("Product Svc")
 				.description("Product Svc to provide REST API(s) to search products")
-				.contact(new Contact("Atanu Bhowmick", "https://github.com/atanubhowmick/sapient-product-svc",
+				.contact(new Contact("Atanu Bhowmick", "https://github.com/atanubhowmick",
 						"mail2atanu007@gmail.com"))
 				.build();
 	}
