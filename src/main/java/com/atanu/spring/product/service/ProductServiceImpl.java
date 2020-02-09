@@ -4,8 +4,11 @@
 package com.atanu.spring.product.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,10 +45,15 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	@Override
 	public ProductDetails get(Long id) {
+		logger.debug("Received Id: {}", id);
 		ProductEntity entity = productRepository.findByProductIdAndActiveStatus(id, StatusEnum.ACTIVE.getValue());
+		Optional<ProductEntity> entity1 = productRepository.findById(id);
+		logger.debug("Checking... {}", entity1);
 		if (null == entity) {
 			throw new ProductException(ErrorCode.PE001.name(), ErrorCode.PE001.getErrorMsg(), HttpStatus.NOT_FOUND);
 		}

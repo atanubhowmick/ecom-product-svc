@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * This entity class is mapped with the table PRODUCT_DETAILS in database. It
@@ -31,6 +32,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "PRODUCT_DETAILS")
 public class ProductEntity extends BaseEntity {

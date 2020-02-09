@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * This entity class is mapped with the table COLOUR_DETAILS in database
@@ -26,6 +27,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "COLOUR_DETAILS")
 public class ColourEntity extends BaseEntity {

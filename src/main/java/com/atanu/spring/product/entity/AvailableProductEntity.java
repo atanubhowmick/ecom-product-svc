@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @see ProductEntity
@@ -22,6 +23,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "AVAILABLE_PRODUCT")
 public class AvailableProductEntity extends BaseEntity {
@@ -34,5 +36,4 @@ public class AvailableProductEntity extends BaseEntity {
 
 	@Column(name = "PRODUCT_COUNT")
 	private Long productCount;
-
 }
