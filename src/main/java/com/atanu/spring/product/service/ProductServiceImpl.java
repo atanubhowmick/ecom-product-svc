@@ -4,7 +4,6 @@
 package com.atanu.spring.product.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	@Override
@@ -77,7 +76,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 				StatusEnum.ACTIVE);
 		Page<ProductEntity> page = productRepository.findAll(specification, queryPageable.pageable());
 		if (page.isEmpty()) {
-			throw new ProductException(ErrorCode.PE002.name(), ErrorCode.PE002.getErrorMsg());
+			throw new ProductException(ErrorCode.PE002.name(), ErrorCode.PE002.getErrorMsg(), HttpStatus.NOT_FOUND);
 		}
 		List<ProductDetails> products = page.stream().map(e -> this.getProductDetails(e)).collect(Collectors.toList());
 		return new PageImpl<>(products, queryPageable.pageable(), products.size());
