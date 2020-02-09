@@ -3,6 +3,7 @@
  */
 package com.atanu.spring.product.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -22,6 +24,7 @@ import lombok.Setter;
  * @see BrandEntity
  * @see CategoryEntity
  * @see ColourEntity
+ * @see AvailableProductEntity
  * 
  * @author Atanu Bhowmick
  *
@@ -47,16 +50,23 @@ public class ProductEntity extends BaseEntity {
 
 	@Column(name = "PRODUCT_PRICE")
 	private Double productPrice;
+	
+	@Column(name = "PRODUCT_SIZE")
+	private String productSize;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "BRAND_ID")
 	private BrandEntity brandEntity;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CATEGORY_ID")
 	private CategoryEntity categoryEntity;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "COLOUR_ID")
 	private ColourEntity colourEntity;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private AvailableProductEntity availableProductCount;
 }

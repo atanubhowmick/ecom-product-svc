@@ -4,6 +4,7 @@
 package com.atanu.spring.product.repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -90,6 +91,32 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 				case NOT_EQUALS:
 					filterPredicate = criteriaBuilder.notEqual(root.get(column), value);
 					break;
+				case GREATER_THAN_EQUAL:
+					if (value instanceof Long) {
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Long) value);
+					} else if (value instanceof Integer) {
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Integer) value);
+					} else if (value instanceof Double) {
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Double) value);
+					} else if (value instanceof Date) {
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Date) value);
+					} else if (value instanceof String) {
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (String) value);
+					}
+					break;
+				case LESS_THAN_EQUAL:
+					if (value instanceof Long) {
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Long) value);
+					} else if (value instanceof Integer) {
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Integer) value);
+					} else if (value instanceof Double) {
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Double) value);
+					} else if (value instanceof Date) {
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Date) value);
+					} else if (value instanceof String) {
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (String) value);
+					}
+					break;
 				case IN:
 					if (value instanceof List && !CollectionUtils.isEmpty((List<Object>) value)) {
 						filterPredicate = root.get(column).in((List<Object>) value);
@@ -121,11 +148,39 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 		if (null != queryPageable && !CollectionUtils.isEmpty(queryPageable.getSearches())) {
 			searchPredicates = new ArrayList<>();
 			for (QuerySearch search : queryPageable.getSearches()) {
+				String column = search.getSearchColumn();
+				Object value = search.getSearchValue();
 				switch (search.getSearchOperator()) {
 				case IS_NULL:
 					break;
 				case IN:
 					searchPredicates.add(root.get(search.getSearchColumn()).in((List<Object>) search.getSearchValue()));
+					break;
+				case GREATER_THAN_EQUAL:
+					if (value instanceof Long) {
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Long) value));
+					} else if (value instanceof Integer) {
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Integer) value));
+					} else if (value instanceof Double) {
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Double) value));
+					} else if (value instanceof Date) {
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Date) value));
+					} else if (value instanceof String) {
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (String) value));
+					}
+					break;
+				case LESS_THAN_EQUAL:
+					if (value instanceof Long) {
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Long) value));
+					} else if (value instanceof Integer) {
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Integer) value));
+					} else if (value instanceof Double) {
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Double) value));
+					} else if (value instanceof Date) {
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Date) value));
+					} else if (value instanceof String) {
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (String) value));
+					}
 					break;
 				default:
 					searchPredicates.add(criteriaBuilder.like(criteriaBuilder.upper(root.get(search.getSearchColumn())),

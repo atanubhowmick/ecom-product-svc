@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atanu.spring.product.dto.GenericResponse;
-import com.atanu.spring.product.dto.ProductDTO;
+import com.atanu.spring.product.dto.ProductDetails;
 import com.atanu.spring.product.dto.QueryPageable;
 import com.atanu.spring.product.service.SearchService;
 
@@ -31,27 +31,27 @@ import com.atanu.spring.product.service.SearchService;
 public class ProductController {
 
 	@Autowired
-	private SearchService<ProductDTO, Long> productService;
+	private SearchService<ProductDetails, Long> productService;
 
 	@GetMapping(value = "/get-by-id/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<ProductDTO>> getProductById(@PathVariable("product-id") Long productId) {
-		ProductDTO product = productService.get(productId);
-		GenericResponse<ProductDTO> response = new GenericResponse<>(product);
+	public ResponseEntity<GenericResponse<ProductDetails>> getProductById(@PathVariable("product-id") Long productId) {
+		ProductDetails product = productService.get(productId);
+		GenericResponse<ProductDetails> response = new GenericResponse<>(product);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<List<ProductDTO>>> getAllProducts() {
-		List<ProductDTO> products = productService.getAll();
-		GenericResponse<List<ProductDTO>> response = new GenericResponse<>(products);
+	public ResponseEntity<GenericResponse<List<ProductDetails>>> getAllProducts() {
+		List<ProductDetails> products = productService.getAll();
+		GenericResponse<List<ProductDetails>> response = new GenericResponse<>(products);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<Page<ProductDTO>>> searchBySpecification(
+	public ResponseEntity<GenericResponse<Page<ProductDetails>>> searchBySpecification(
 			@RequestBody QueryPageable queryPageable) {
-		Page<ProductDTO> products = productService.search(queryPageable);
-		GenericResponse<Page<ProductDTO>> response = new GenericResponse<>(products);
+		Page<ProductDetails> products = productService.search(queryPageable);
+		GenericResponse<Page<ProductDetails>> response = new GenericResponse<>(products);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

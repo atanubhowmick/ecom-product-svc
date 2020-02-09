@@ -18,5 +18,7 @@ public enum QueryOperatorEnum {
 	IS_NOT_NULL,
 	EQUALS,
 	NOT_EQUALS,
+	GREATER_THAN_EQUAL,
+	LESS_THAN_EQUAL,
 	IN;
 }

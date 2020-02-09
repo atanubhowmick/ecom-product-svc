@@ -17,9 +17,11 @@ public enum QuerySearchEnum {
 	NAME("productName"),
 	DESCRIPTION("productDesc"),
 	PRICE("productPrice"),
+	SIZE("productSize"),
 	BRAND_NAME("brandEntity.brandName"),
 	CATEGORY("categoryEntity.categoryName"),
-	COLOUR("colourEntity.colourName");
+	COLOUR("colourEntity.colourName"),
+	PRODUCT_COUNT("availableProductCount.productCount");
 
 	private String column;
 

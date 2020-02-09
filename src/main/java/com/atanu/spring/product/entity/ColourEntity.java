@@ -19,6 +19,7 @@ import lombok.Setter;
  * @see ProductEntity
  * @see BrandEntity
  * @see CategoryEntity
+ * @see AvailableProductEntity
  * 
  * @author Atanu Bhowmick
  *

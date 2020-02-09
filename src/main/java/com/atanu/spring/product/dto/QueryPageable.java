@@ -45,9 +45,9 @@ public class QueryPageable implements Serializable {
 		Pageable pageable = null;
 		if (null != orderBy) {
 			if (null != order && QueryOrderEnum.desc.equals(order)) {
-				pageable = PageRequest.of(page, size, Sort.by(orderBy.name()).descending());
+				pageable = PageRequest.of(page, size, Sort.by(orderBy.getColumn()).descending());
 			} else {
-				pageable = PageRequest.of(page, size, Sort.by(orderBy.name()));
+				pageable = PageRequest.of(page, size, Sort.by(orderBy.getColumn()));
 			}
 		} else {
 			pageable = PageRequest.of(page, size);

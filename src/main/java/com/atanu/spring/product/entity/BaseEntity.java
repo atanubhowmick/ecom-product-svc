@@ -32,7 +32,7 @@ import lombok.Setter;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 2432524720416964118L;
 
