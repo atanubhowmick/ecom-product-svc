@@ -10,14 +10,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.atanu.spring.product.constant.QueryOrderByEnum;
 import com.atanu.spring.product.constant.QueryOrderEnum;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * Contains all the page information with filter and search criteria
+ * 
  * @author Atanu Bhowmick
  *
  */
@@ -25,20 +29,26 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+@ApiModel(value = "QueryPageable", description = "Contains all the page information with filter and search criteria")
 public class QueryPageable implements Serializable {
 
 	private static final long serialVersionUID = -2891214167142421480L;
 
 	private Integer page = 0;
 	private Integer size = 10;
-	private QueryOrderEnum orderBy;
+	private QueryOrderByEnum orderBy;
+	private QueryOrderEnum order;
 	private List<QueryFilter> filters;
 	private List<QuerySearch> searches;
 
 	public Pageable pageable() {
 		Pageable pageable = null;
-		if (orderBy != null) {
-			pageable = PageRequest.of(page, size, Sort.by(orderBy.name()));
+		if (null != orderBy) {
+			if (null != order && QueryOrderEnum.desc.equals(order)) {
+				pageable = PageRequest.of(page, size, Sort.by(orderBy.name()).descending());
+			} else {
+				pageable = PageRequest.of(page, size, Sort.by(orderBy.name()));
+			}
 		} else {
 			pageable = PageRequest.of(page, size);
 		}
