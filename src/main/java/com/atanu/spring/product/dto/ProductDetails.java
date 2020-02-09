@@ -33,4 +33,18 @@ public class ProductDetails implements Serializable {
 
 	@ApiModelProperty(value = "Product Description", example = "Redmi Note-8 Pro with 16 GB RAM and 64 GB Memory")
 	private String productDesc;
+
+	@ApiModelProperty(value = "Product Price", example = "10000.00")
+	private Double productPrice;
+
+	@ApiModelProperty(value = "Product Size", example = "M")
+	private String productSize;
+
+	private BrandDetails brandDetails;
+
+	private CategoryDetails categoryDetails;
+
+	private ColourDetails colourDetails;
+
+	private AvailableProductDetails availableProductDetails;
 }

@@ -15,8 +15,16 @@ import org.springframework.util.CollectionUtils;
 
 import com.atanu.spring.product.constant.ErrorCode;
 import com.atanu.spring.product.constant.StatusEnum;
+import com.atanu.spring.product.dto.AvailableProductDetails;
+import com.atanu.spring.product.dto.BrandDetails;
+import com.atanu.spring.product.dto.CategoryDetails;
+import com.atanu.spring.product.dto.ColourDetails;
 import com.atanu.spring.product.dto.ProductDetails;
 import com.atanu.spring.product.dto.QueryPageable;
+import com.atanu.spring.product.entity.AvailableProductEntity;
+import com.atanu.spring.product.entity.BrandEntity;
+import com.atanu.spring.product.entity.CategoryEntity;
+import com.atanu.spring.product.entity.ColourEntity;
 import com.atanu.spring.product.entity.ProductEntity;
 import com.atanu.spring.product.exception.ProductException;
 import com.atanu.spring.product.repository.ProductRepository;
@@ -77,6 +85,30 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 		product.setProductId(entity.getProductId());
 		product.setProductName(entity.getProductName());
 		product.setProductDesc(entity.getProductDesc());
+		product.setProductPrice(entity.getProductPrice());
+		product.setProductSize(entity.getProductSize());
+		if (null != entity.getBrandEntity()) {
+			BrandEntity brand = entity.getBrandEntity();
+			BrandDetails brandDetails = new BrandDetails(brand.getBrandId(), brand.getBrandName(),
+					brand.getBrandDesc());
+			product.setBrandDetails(brandDetails);
+		}
+		if (null != entity.getCategoryEntity()) {
+			CategoryEntity category = entity.getCategoryEntity();
+			CategoryDetails categoryDetails = new CategoryDetails(category.getCategoryId(), category.getCategoryName());
+			product.setCategoryDetails(categoryDetails);
+		}
+		if (null != entity.getColourEntity()) {
+			ColourEntity colour = entity.getColourEntity();
+			ColourDetails categoryDetails = new ColourDetails(colour.getColourId(), colour.getColourName());
+			product.setColourDetails(categoryDetails);
+		}
+		if (null != entity.getAvailableProductCount()) {
+			AvailableProductEntity availableProductEntity = entity.getAvailableProductCount();
+			AvailableProductDetails availableProductDetails = new AvailableProductDetails(
+					availableProductEntity.getProductId(), availableProductEntity.getProductCount());
+			product.setAvailableProductDetails(availableProductDetails);
+		}
 		return product;
 	}
 }
