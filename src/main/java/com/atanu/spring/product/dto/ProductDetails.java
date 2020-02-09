@@ -40,11 +40,15 @@ public class ProductDetails implements Serializable {
 	@ApiModelProperty(value = "Product Size", example = "M")
 	private String productSize;
 
+	@ApiModelProperty(value = "Brand Details")
 	private BrandDetails brandDetails;
 
+	@ApiModelProperty(value = "Category Details")
 	private CategoryDetails categoryDetails;
 
+	@ApiModelProperty(value = "Colour Details")
 	private ColourDetails colourDetails;
 
+	@ApiModelProperty(value = "Available Product Details")
 	private AvailableProductDetails availableProductDetails;
 }

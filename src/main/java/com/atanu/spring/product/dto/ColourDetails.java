@@ -27,5 +27,5 @@ public class ColourDetails implements Serializable {
 	private static final long serialVersionUID = -5063664403711156410L;
 
 	private Long colourId;
-	private Long colourName;
+	private String colourName;
 }

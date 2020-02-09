@@ -38,5 +38,5 @@ public class ColourEntity extends BaseEntity {
 	private Long colourId;
 
 	@Column(name = "COLOUR_NAME")
-	private Long colourName;
+	private String colourName;
 }

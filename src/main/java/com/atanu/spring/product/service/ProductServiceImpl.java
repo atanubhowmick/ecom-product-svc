@@ -31,7 +31,7 @@ import com.atanu.spring.product.repository.ProductRepository;
 import com.atanu.spring.product.repository.QueryPageableSpecification;
 
 /**
- * This is the implementation class of {@link BaseService}.
+ * This is the implementation class of {@link SearchService}.
  * 
  * 
  * @author Atanu Bhowmick
