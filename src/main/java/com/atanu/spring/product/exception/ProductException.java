@@ -21,6 +21,12 @@ public class ProductException extends RuntimeException {
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
 	}
+	
+	public ProductException(String errorCode, String errorMessage, HttpStatus httpStatus) {
+		this.errorCode = errorCode;
+		this.errorMessage = errorMessage;
+		this.httpStatus = httpStatus;
+	}
 
 	public ProductException(String errorCode, String errorMessage, Throwable ex) {
 		super(ex);

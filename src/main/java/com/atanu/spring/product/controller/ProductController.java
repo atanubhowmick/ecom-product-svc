@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atanu.spring.product.dto.GenericResponse;
 import com.atanu.spring.product.dto.ProductDTO;
 import com.atanu.spring.product.dto.QueryPageable;
-import com.atanu.spring.product.service.ProductService;
+import com.atanu.spring.product.service.SearchService;
 
 /**
  * @author Atanu Bhowmick
@@ -31,7 +31,7 @@ import com.atanu.spring.product.service.ProductService;
 public class ProductController {
 
 	@Autowired
-	private ProductService<ProductDTO, Long> productService;
+	private SearchService<ProductDTO, Long> productService;
 
 	@GetMapping(value = "/get-by-id/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<ProductDTO>> getProductById(@PathVariable("product-id") Long productId) {
@@ -48,9 +48,9 @@ public class ProductController {
 	}
 
 	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<Page<ProductDTO>>> getBySpecification(
+	public ResponseEntity<GenericResponse<Page<ProductDTO>>> searchBySpecification(
 			@RequestBody QueryPageable queryPageable) {
-		Page<ProductDTO> products = productService.get(queryPageable);
+		Page<ProductDTO> products = productService.search(queryPageable);
 		GenericResponse<Page<ProductDTO>> response = new GenericResponse<>(products);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

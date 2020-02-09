@@ -8,13 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * This entity class is mapped with the table PRODUCT_DETAILS in database
+ * This entity class is mapped with the table PRODUCT_DETAILS in database. It
+ * joins with other entity to fetch all the information.
  * 
  * @see BrandEntity
  * @see CategoryEntity
@@ -42,4 +45,18 @@ public class ProductEntity extends BaseEntity {
 	@Column(name = "PRODUCT_DESC")
 	private String productDesc;
 
+	@Column(name = "PRODUCT_PRICE")
+	private Double productPrice;
+
+	@OneToOne
+	@JoinColumn(name = "BRAND_ID")
+	private BrandEntity brandEntity;
+
+	@OneToOne
+	@JoinColumn(name = "CATEGORY_ID")
+	private CategoryEntity categoryEntity;
+
+	@OneToOne
+	@JoinColumn(name = "COLOUR_ID")
+	private ColourEntity colourEntity;
 }

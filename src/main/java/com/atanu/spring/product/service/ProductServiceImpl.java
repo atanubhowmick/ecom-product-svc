@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.atanu.spring.product.constant.ErrorCode;
 import com.atanu.spring.product.constant.StatusEnum;
@@ -21,14 +23,14 @@ import com.atanu.spring.product.repository.ProductRepository;
 import com.atanu.spring.product.repository.QueryPageableSpecification;
 
 /**
- * This is the implementation class of {@link ProductService}.
+ * This is the implementation class of {@link BaseService}.
  * 
  * 
  * @author Atanu Bhowmick
  *
  */
 @Service
-public class ProductServiceImpl implements ProductService<ProductDTO, Long> {
+public class ProductServiceImpl implements SearchService<ProductDTO, Long> {
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -36,11 +38,24 @@ public class ProductServiceImpl implements ProductService<ProductDTO, Long> {
 	@Override
 	public ProductDTO get(Long id) {
 		ProductEntity entity = productRepository.findByProductIdAndActiveStatus(id, StatusEnum.ACTIVE.getValue());
+		if (null == entity) {
+			throw new ProductException(ErrorCode.PE001.name(), ErrorCode.PE001.getErrorMsg(), HttpStatus.NOT_FOUND);
+		}
 		return this.getProductDTO(entity);
 	}
 
 	@Override
-	public Page<ProductDTO> get(QueryPageable queryPageable) {
+	public List<ProductDTO> getAll() {
+		List<ProductEntity> entities = productRepository.findByActiveStatus(StatusEnum.ACTIVE.getValue());
+		if (CollectionUtils.isEmpty(entities)) {
+			throw new ProductException(ErrorCode.PE001.name(), ErrorCode.PE001.getErrorMsg(), HttpStatus.NOT_FOUND);
+		}
+		return entities.stream().map(e -> this.getProductDTO(e)).collect(Collectors.toList());
+	}
+
+	@Override
+	public Page<ProductDTO> search(QueryPageable queryPageable) {
+		this.validate(queryPageable);
 		QueryPageableSpecification<ProductEntity> specification = new QueryPageableSpecification<>(queryPageable,
 				StatusEnum.ACTIVE);
 		Page<ProductEntity> page = productRepository.findAll(specification, queryPageable.pageable());
@@ -49,12 +64,6 @@ public class ProductServiceImpl implements ProductService<ProductDTO, Long> {
 		}
 		List<ProductDTO> products = page.stream().map(e -> this.getProductDTO(e)).collect(Collectors.toList());
 		return new PageImpl<>(products, queryPageable.pageable(), products.size());
-	}
-
-	@Override
-	public List<ProductDTO> getAll() {
-		List<ProductEntity> entities = productRepository.findByActiveStatus(StatusEnum.ACTIVE.getValue());
-		return entities.stream().map(e -> this.getProductDTO(e)).collect(Collectors.toList());
 	}
 
 	/**

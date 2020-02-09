@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * This entity class is mapped with the table BRAND_DETAILS in database
+ * This entity class is mapped with the table BRAND_DETAILS in database.
  * 
  * @see ProductEntity
  * @see CategoryEntity
