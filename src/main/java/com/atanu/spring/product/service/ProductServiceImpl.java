@@ -52,8 +52,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 	public ProductDetails get(Long id) {
 		logger.debug("Received Id: {}", id);
 		ProductEntity entity = productRepository.findByProductIdAndActiveStatus(id, StatusEnum.ACTIVE.getValue());
-		Optional<ProductEntity> entity1 = productRepository.findById(id);
-		logger.debug("Checking... {}", entity1);
+		logger.debug("Product from DB: {}", entity);
 		if (null == entity) {
 			throw new ProductException(ErrorCode.PE001.name(), ErrorCode.PE001.getErrorMsg(), HttpStatus.NOT_FOUND);
 		}
@@ -71,7 +70,9 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 	@Override
 	public Page<ProductDetails> search(QueryPageable queryPageable) {
+		logger.debug("Received QueryPageable: {}", queryPageable);
 		this.validate(queryPageable);
+		logger.debug("After validation QueryPageable: {}", queryPageable);
 		QueryPageableSpecification<ProductEntity> specification = new QueryPageableSpecification<>(queryPageable,
 				StatusEnum.ACTIVE);
 		Page<ProductEntity> page = productRepository.findAll(specification, queryPageable.pageable());
