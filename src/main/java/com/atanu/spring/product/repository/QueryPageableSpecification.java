@@ -88,10 +88,10 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 				case IS_NOT_NULL:
 					filterPredicate = criteriaBuilder.isNotNull(path);
 					break;
-				case EQUALS:
+				case EQUAL:
 					filterPredicate = criteriaBuilder.equal(path, value);
 					break;
-				case NOT_EQUALS:
+				case NOT_EQUAL:
 					filterPredicate = criteriaBuilder.notEqual(path, value);
 					break;
 				case GREATER_THAN_EQUAL:

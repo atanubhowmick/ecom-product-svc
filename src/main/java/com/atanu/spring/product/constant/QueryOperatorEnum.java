@@ -16,8 +16,8 @@ import com.atanu.spring.product.repository.QueryPageableSpecification;
 public enum QueryOperatorEnum {
 	IS_NULL,
 	IS_NOT_NULL,
-	EQUALS,
-	NOT_EQUALS,
+	EQUAL,
+	NOT_EQUAL,
 	GREATER_THAN_EQUAL,
 	LESS_THAN_EQUAL,
 	IN;
