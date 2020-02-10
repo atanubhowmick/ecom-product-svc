@@ -39,7 +39,7 @@ public interface SearchService<T, K> extends BaseService<T, K> {
 	 * @param queryPageable
 	 */
 	public default void validate(QueryPageable queryPageable) {
-		if (queryPageable.getPage() == null || queryPageable.getPage() <= 0) {
+		if (queryPageable.getPage() == null || queryPageable.getPage() < 0) {
 			throw new ProductException(ErrorCode.PE003.name(), ErrorCode.PE003.getErrorMsg());
 		}
 		if (queryPageable.getSize() == null || queryPageable.getSize() <= 0) {
