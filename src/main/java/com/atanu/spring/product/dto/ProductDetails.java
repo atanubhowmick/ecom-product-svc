@@ -20,7 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "ProductDTO", description = "Contains all the details about Product")
+@ApiModel(value = "ProductDetails", description = "Contains all the details about Product")
 public class ProductDetails implements Serializable {
 
 	private static final long serialVersionUID = 1963874875184557520L;
