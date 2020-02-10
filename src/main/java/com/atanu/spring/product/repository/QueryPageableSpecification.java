@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -77,49 +79,50 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 			for (QueryFilter filter : queryPageable.getFilters()) {
 				Predicate filterPredicate = null;
 				String column = filter.getFilterColumn();
+				Path<Object> path = this.joinColumns(root, column);
 				Object value = filter.getFilterValue();
 				switch (filter.getFilterOperator()) {
 				case IS_NULL:
-					filterPredicate = criteriaBuilder.isNull(root.get(column));
+					filterPredicate = criteriaBuilder.isNull(path);
 					break;
 				case IS_NOT_NULL:
-					filterPredicate = criteriaBuilder.isNotNull(root.get(column));
+					filterPredicate = criteriaBuilder.isNotNull(path);
 					break;
 				case EQUALS:
-					filterPredicate = criteriaBuilder.equal(root.get(column), value);
+					filterPredicate = criteriaBuilder.equal(path, value);
 					break;
 				case NOT_EQUALS:
-					filterPredicate = criteriaBuilder.notEqual(root.get(column), value);
+					filterPredicate = criteriaBuilder.notEqual(path, value);
 					break;
 				case GREATER_THAN_EQUAL:
 					if (value instanceof Long) {
-						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Long) value);
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(path.as(Long.class), (Long) value);
 					} else if (value instanceof Integer) {
-						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Integer) value);
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(path.as(Integer.class), (Integer) value);
 					} else if (value instanceof Double) {
-						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Double) value);
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(path.as(Double.class), (Double) value);
 					} else if (value instanceof Date) {
-						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Date) value);
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(path.as(Date.class), (Date) value);
 					} else if (value instanceof String) {
-						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get(column), (String) value);
+						filterPredicate = criteriaBuilder.greaterThanOrEqualTo(path.as(String.class), (String) value);
 					}
 					break;
 				case LESS_THAN_EQUAL:
 					if (value instanceof Long) {
-						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Long) value);
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(path.as(Long.class), (Long) value);
 					} else if (value instanceof Integer) {
-						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Integer) value);
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(path.as(Integer.class), (Integer) value);
 					} else if (value instanceof Double) {
-						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Double) value);
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(path.as(Double.class), (Double) value);
 					} else if (value instanceof Date) {
-						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (Date) value);
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(path.as(Date.class), (Date) value);
 					} else if (value instanceof String) {
-						filterPredicate = criteriaBuilder.lessThanOrEqualTo(root.get(column), (String) value);
+						filterPredicate = criteriaBuilder.lessThanOrEqualTo(path.as(String.class), (String) value);
 					}
 					break;
 				case IN:
 					if (value instanceof List && !CollectionUtils.isEmpty((List<Object>) value)) {
-						filterPredicate = root.get(column).in((List<Object>) value);
+						filterPredicate = path.in((List<Object>) value);
 					}
 					break;
 				}
@@ -149,41 +152,42 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 			searchPredicates = new ArrayList<>();
 			for (QuerySearch search : queryPageable.getSearches()) {
 				String column = search.getSearchColumn();
+				Path<Object> path = this.joinColumns(root, column);
 				Object value = search.getSearchValue();
 				switch (search.getSearchOperator()) {
 				case IS_NULL:
 					break;
 				case IN:
-					searchPredicates.add(root.get(search.getSearchColumn()).in((List<Object>) search.getSearchValue()));
+					searchPredicates.add(path.in((List<Object>) search.getSearchValue()));
 					break;
 				case GREATER_THAN_EQUAL:
 					if (value instanceof Long) {
-						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Long) value));
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(path.as(Long.class), (Long) value));
 					} else if (value instanceof Integer) {
-						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Integer) value));
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(path.as(Integer.class), (Integer) value));
 					} else if (value instanceof Double) {
-						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Double) value));
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(path.as(Double.class), (Double) value));
 					} else if (value instanceof Date) {
-						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (Date) value));
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(path.as(Date.class), (Date) value));
 					} else if (value instanceof String) {
-						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(column), (String) value));
+						searchPredicates.add(criteriaBuilder.greaterThanOrEqualTo(path.as(String.class), (String) value));
 					}
 					break;
 				case LESS_THAN_EQUAL:
 					if (value instanceof Long) {
-						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Long) value));
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(path.as(Long.class), (Long) value));
 					} else if (value instanceof Integer) {
-						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Integer) value));
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(path.as(Integer.class), (Integer) value));
 					} else if (value instanceof Double) {
-						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Double) value));
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(path.as(Double.class), (Double) value));
 					} else if (value instanceof Date) {
-						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (Date) value));
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(path.as(Date.class), (Date) value));
 					} else if (value instanceof String) {
-						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(column), (String) value));
+						searchPredicates.add(criteriaBuilder.lessThanOrEqualTo(path.as(String.class), (String) value));
 					}
 					break;
 				default:
-					searchPredicates.add(criteriaBuilder.like(criteriaBuilder.upper(root.get(search.getSearchColumn())),
+					searchPredicates.add(criteriaBuilder.like(criteriaBuilder.upper(path.as(String.class)),
 							"%" + search.getSearchValue().toString().toUpperCase() + "%"));
 					break;
 				}
@@ -196,5 +200,29 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 			predicate = criteriaBuilder.and(predicate, searchPredicate);
 		}
 		return predicate;
+	}
+
+	/**
+	 * 
+	 * @param root
+	 * @param column
+	 * @return Path
+	 */
+	private Path<Object> joinColumns(Root<T> root, String column) {
+		Path<Object> path = null;
+		String[] columns = column.split("\\.");
+		if (columns.length == 1) {
+			path = root.get(columns[0]);
+		} else if (columns.length == 2) {
+			Join<Object, Object> join = root.join(columns[0]);
+			path = join.get(columns[1]);
+		} else {
+			Join<Object, Object> join = root.join(columns[0]);
+			for (int i = 1; i < columns.length - 1; i++) {
+				join = root.join(columns[i]);
+			}
+			path = join.get(columns[columns.length - 1]);
+		}
+		return path;
 	}
 }
