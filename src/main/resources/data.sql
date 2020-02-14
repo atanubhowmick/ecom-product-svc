@@ -10,6 +10,7 @@ INSERT INTO PRODUCT_DETAILS VALUES (8, 'Redmi Note-8 Pro', '8 GB RAM, 16 GB Memo
 INSERT INTO PRODUCT_DETAILS VALUES (9, 'Lenovo K8', '4 GB RAM, 32 GB Memory, 48MP Camera', 14000.00, '10 CM', 8, 1, 1, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (10, 'Buffalo Casual Shirt', 'Buffalo Men Casual shirt', 1000.00, '80 CM', 4, 2, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (11, 'Peter England Formal Pant', 'Peter England Formal Pant for Men', 1199.00, '32 Inch', 3, 3, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
+INSERT INTO PRODUCT_DETAILS VALUES (12, 'HP 8 GB Pendrive', 'HP 8 GB Pendrive - Flsh memory', 599.00, 'Small', 7, 4, 2, 'Y', 1001, NOW(), 1001, NOW(), 1);
 
 /* Insert Brand Details */
 INSERT INTO BRAND_DETAILS VALUES (1, 'Samsung', 'Samsung Electronics Co. Ltd.', 'Y', 1001, NOW(), 1001, NOW(), 1);
