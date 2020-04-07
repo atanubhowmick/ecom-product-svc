@@ -78,7 +78,7 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 		if (null != queryPageable && !CollectionUtils.isEmpty(queryPageable.getFilters())) {
 			for (QueryFilter filter : queryPageable.getFilters()) {
 				Predicate filterPredicate = null;
-				String column = filter.getFilterColumn();
+				String column = filter.getFilterBy().getColumn();
 				Path<Object> path = this.joinColumns(root, column);
 				Object value = filter.getFilterValue();
 				switch (filter.getFilterOperator()) {
@@ -151,7 +151,7 @@ public class QueryPageableSpecification<T> implements Specification<T> {
 		if (null != queryPageable && !CollectionUtils.isEmpty(queryPageable.getSearches())) {
 			searchPredicates = new ArrayList<>();
 			for (QuerySearch search : queryPageable.getSearches()) {
-				String column = search.getSearchColumn();
+				String column = search.getSearchBy().getColumn();
 				Path<Object> path = this.joinColumns(root, column);
 				Object value = search.getSearchValue();
 				switch (search.getSearchOperator()) {

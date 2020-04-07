@@ -3,15 +3,13 @@
  */
 package com.atanu.spring.product.dto;
 
-import java.io.Serializable;
-
 import com.atanu.spring.product.constant.QueryFilterEnum;
 import com.atanu.spring.product.constant.QueryOperatorEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author Atanu Bhowmick
@@ -19,14 +17,13 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-public class QueryFilter implements Serializable {
+@AllArgsConstructor
+public class QueryFilter extends AbstractBaseDTO {
 
-	private static final long serialVersionUID = -7229466529156636679L;
+	private static final long serialVersionUID = 6505098951618946485L;
 
 	private QueryFilterEnum filterBy;
 	private Object filterValue;
 	private QueryOperatorEnum filterOperator;
-	private String filterColumn;
 }
