@@ -1,4 +1,4 @@
-# sapient-product-svc
+# product-svc
 
 This service provide API(s) for Product view and search related funclities.
 
