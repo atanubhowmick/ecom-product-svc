@@ -4,6 +4,7 @@
 package com.atanu.spring.product.service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -14,8 +15,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.atanu.spring.product.constant.ErrorCode;
+import com.atanu.spring.product.constant.ProductConstant;
 import com.atanu.spring.product.constant.StatusEnum;
 import com.atanu.spring.product.dto.AvailableProductDetails;
 import com.atanu.spring.product.dto.BrandDetails;
@@ -31,6 +34,9 @@ import com.atanu.spring.product.entity.ProductEntity;
 import com.atanu.spring.product.exception.ProductException;
 import com.atanu.spring.product.repository.ProductRepository;
 import com.atanu.spring.product.repository.QueryPageableSpecification;
+import com.atanu.spring.product.util.ProductUtil;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 
 /**
  * This is the implementation class of {@link SearchService}.
@@ -44,6 +50,9 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private HazelcastInstance hazelcastInstance;
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
@@ -72,6 +81,15 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 		logger.debug("Received QueryPageable: {}", queryPageable);
 		this.validate(queryPageable);
 		logger.debug("After validation QueryPageable: {}", queryPageable);
+		
+		IMap<String, Page<ProductDetails>> productCacheMap = hazelcastInstance.getMap(ProductConstant.PRODUCT_SEARCH_CACHE_MAP_KEY);
+		String queryString = ProductUtil.convertToString(queryPageable);
+		logger.debug("Query String : {}", queryString);
+		if (!StringUtils.isEmpty(queryString) && productCacheMap.containsKey(queryString)) {
+			logger.debug("Search result found in Product cache. Retrieveing from the cache..");
+			return productCacheMap.get(queryString);
+		}
+		logger.debug("Searching for the result in database..");
 		QueryPageableSpecification<ProductEntity> specification = new QueryPageableSpecification<>(queryPageable,
 				StatusEnum.ACTIVE);
 		Page<ProductEntity> page = productRepository.findAll(specification, queryPageable.pageable());
@@ -79,7 +97,13 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 			throw new ProductException(ErrorCode.PE002.name(), ErrorCode.PE002.getErrorMsg(), HttpStatus.NOT_FOUND);
 		}
 		List<ProductDetails> products = page.stream().map(e -> this.getProductDetails(e)).collect(Collectors.toList());
-		return new PageImpl<>(products, queryPageable.pageable(), products.size());
+		Page<ProductDetails> pageProduct = new PageImpl<>(products, queryPageable.pageable(), products.size());
+		
+		// Save the search in cache for 10 minutes
+		productCacheMap.lock(queryString);
+		productCacheMap.put(queryString, pageProduct, ProductConstant.PRODUCT_CACHE_TTL, TimeUnit.MINUTES);
+		productCacheMap.unlock(queryString);
+		return pageProduct;
 	}
 
 	/**
