@@ -45,14 +45,13 @@ public interface SearchService<T, K> extends BaseService<T, K> {
 		if (queryPageable.getSize() == null || queryPageable.getSize() <= 0) {
 			throw new ProductException(ErrorCode.PE004.name(), ErrorCode.PE004.getErrorMsg());
 		}
-		
+
 		if (!CollectionUtils.isEmpty(queryPageable.getFilters())) {
 			for (QueryFilter filter : queryPageable.getFilters()) {
 				if (StringUtils.isEmpty(filter.getFilterBy()) || null == filter.getFilterOperator()
 						|| null == filter.getFilterValue()) {
 					throw new ProductException(ErrorCode.PE005.name(), ErrorCode.PE005.getErrorMsg());
 				}
-				filter.setFilterColumn(filter.getFilterBy().getColumn());
 			}
 		}
 
@@ -62,7 +61,6 @@ public interface SearchService<T, K> extends BaseService<T, K> {
 						|| null == search.getSearchValue()) {
 					throw new ProductException(ErrorCode.PE005.name(), ErrorCode.PE005.getErrorMsg());
 				}
-				search.setSearchColumn(search.getSearchBy().getColumn());
 			}
 		}
 	}

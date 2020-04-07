@@ -92,12 +92,12 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 		logger.debug("Searching for the result in database..");
 		QueryPageableSpecification<ProductEntity> specification = new QueryPageableSpecification<>(queryPageable,
 				StatusEnum.ACTIVE);
-		Page<ProductEntity> page = productRepository.findAll(specification, queryPageable.pageable());
+		Page<ProductEntity> page = productRepository.findAll(specification, queryPageable.getPageable());
 		if (page.isEmpty()) {
 			throw new ProductException(ErrorCode.PE002.name(), ErrorCode.PE002.getErrorMsg(), HttpStatus.NOT_FOUND);
 		}
 		List<ProductDetails> products = page.stream().map(e -> this.getProductDetails(e)).collect(Collectors.toList());
-		Page<ProductDetails> pageProduct = new PageImpl<>(products, queryPageable.pageable(), products.size());
+		Page<ProductDetails> pageProduct = new PageImpl<>(products, queryPageable.getPageable(), products.size());
 		
 		// Save the search in cache for 10 minutes
 		productCacheMap.lock(queryString);
