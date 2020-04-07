@@ -29,6 +29,4 @@ public @interface LogMethodCall {
 	boolean showParams() default false;
 
 	boolean showResult() default true;
-
-	boolean truncate() default false;
 }
