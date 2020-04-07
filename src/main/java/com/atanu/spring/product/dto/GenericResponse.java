@@ -3,15 +3,12 @@
  */
 package com.atanu.spring.product.dto;
 
-import java.io.Serializable;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author Atanu Bhowmick
@@ -20,11 +17,10 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "GenericResponse", description = "Commom response object with payload and error response")
-public class GenericResponse<T> implements Serializable {
+public class GenericResponse<T> extends AbstractBaseDTO {
 
 	private static final long serialVersionUID = 1090351768369181315L;
 

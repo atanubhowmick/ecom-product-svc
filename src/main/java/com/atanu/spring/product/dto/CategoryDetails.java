@@ -3,13 +3,10 @@
  */
 package com.atanu.spring.product.dto;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * This DTO class is mapped with CategoryEntity
@@ -19,10 +16,9 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDetails implements Serializable {
+public class CategoryDetails extends AbstractBaseDTO {
 
 	private static final long serialVersionUID = -4723499017508681913L;
 

@@ -7,6 +7,7 @@ import com.atanu.spring.product.constant.QueryOrderByEnum;
 import com.atanu.spring.product.constant.QueryOrderEnum;
 
 import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "QueryOrder", description = "Contains order by information")
 public class QueryOrder extends AbstractBaseDTO {
 	
