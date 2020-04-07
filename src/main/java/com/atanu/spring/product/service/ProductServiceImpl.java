@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.atanu.spring.product.annotation.LogMethodCall;
 import com.atanu.spring.product.constant.ErrorCode;
 import com.atanu.spring.product.constant.ProductConstant;
 import com.atanu.spring.product.constant.StatusEnum;
@@ -45,12 +46,13 @@ import com.hazelcast.core.IMap;
  * @author Atanu Bhowmick
  *
  */
+@LogMethodCall(showParams = true, showResult = true)
 @Service
 public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private HazelcastInstance hazelcastInstance;
 
@@ -80,10 +82,10 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 	public Page<ProductDetails> search(QueryPageable queryPageable) {
 		logger.debug("Received QueryPageable: {}", queryPageable);
 		this.validate(queryPageable);
-		logger.debug("After validation QueryPageable: {}", queryPageable);
-		
-		IMap<String, Page<ProductDetails>> productCacheMap = hazelcastInstance.getMap(ProductConstant.PRODUCT_SEARCH_CACHE_MAP_KEY);
-		String queryString = ProductUtil.convertToString(queryPageable);
+
+		IMap<String, Page<ProductDetails>> productCacheMap = hazelcastInstance
+				.getMap(ProductConstant.PRODUCT_SEARCH_CACHE_MAP_KEY);
+		String queryString = ProductUtil.writeValue(queryPageable);
 		logger.debug("Query String : {}", queryString);
 		if (!StringUtils.isEmpty(queryString) && productCacheMap.containsKey(queryString)) {
 			logger.debug("Search result found in Product cache. Retrieveing from the cache..");
@@ -98,7 +100,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 		}
 		List<ProductDetails> products = page.stream().map(e -> this.getProductDetails(e)).collect(Collectors.toList());
 		Page<ProductDetails> pageProduct = new PageImpl<>(products, queryPageable.getPageable(), products.size());
-		
+
 		// Save the search in cache for 10 minutes
 		productCacheMap.lock(queryString);
 		productCacheMap.put(queryString, pageProduct, ProductConstant.PRODUCT_CACHE_TTL, TimeUnit.MINUTES);

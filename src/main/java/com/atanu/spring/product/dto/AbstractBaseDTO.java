@@ -34,7 +34,7 @@ public abstract class AbstractBaseDTO implements Serializable {
 	public String toString() {
 		String objectString = null;
 		try {
-			objectString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+			objectString = new ObjectMapper().writeValueAsString(this);
 		} catch (JsonProcessingException e) {
 			objectString = super.toString();
 		}
