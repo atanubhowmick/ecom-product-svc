@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
  *
  */
 @RestController
-@RequestMapping("/api/product/")
+@RequestMapping("/api/product")
 public class ProductController {
 
 	@Autowired
