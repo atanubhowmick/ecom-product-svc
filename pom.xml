@@ -65,6 +65,12 @@
 			<optional>true</optional>
 		</dependency>
 		
+		<!-- Seluth Dependency -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		
 		<!-- Swagger2 Dependency -->
 		<dependency>
 			<groupId>io.springfox</groupId>
