@@ -54,8 +54,8 @@ public class ProductController {
 	}
 
 	@ApiOperation(value = "Search and Filter Product", response = GenericResponse.class)
-	@PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<Page<ProductDetails>>> searchBySpecification(
+	@PostMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponse<Page<ProductDetails>>> productsBySpecification(
 			@ApiParam(value = "Provide QueryPageable with Filters/Searches", required = true) @RequestBody QueryPageable queryPageable) {
 		Page<ProductDetails> products = productService.search(queryPageable);
 		GenericResponse<Page<ProductDetails>> response = new GenericResponse<>(products);
