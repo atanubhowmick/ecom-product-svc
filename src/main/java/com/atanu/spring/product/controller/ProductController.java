@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atanu.spring.product.dto.GenericResponse;
@@ -55,10 +56,17 @@ public class ProductController {
 
 	@ApiOperation(value = "Search and Filter Product", response = GenericResponse.class)
 	@PostMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<Page<ProductDetails>>> productsBySpecification(
+	public ResponseEntity<GenericResponse<?>> productsBySpecification(
+			@ApiParam(value = "Indicator if list is required", required = false) @RequestParam(value = "isListRequired", required = false) boolean isListRequired,
 			@ApiParam(value = "Provide QueryPageable with Filters/Searches", required = true) @RequestBody QueryPageable queryPageable) {
 		Page<ProductDetails> products = productService.search(queryPageable);
-		GenericResponse<Page<ProductDetails>> response = new GenericResponse<>(products);
+		GenericResponse<?> response = null;
+		if(isListRequired) {
+			// Return list as feign client is not able to consume page
+			response = new GenericResponse<>(products.getContent());
+		} else {
+			response = new GenericResponse<>(products);
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
