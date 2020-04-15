@@ -3,13 +3,10 @@
  */
 package com.atanu.spring.product.dto;
 
-import java.io.Serializable;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * This class contains all the information related to Product
@@ -19,9 +16,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
 @ApiModel(value = "ProductDetails", description = "Contains all the details about Product")
-public class ProductDetails implements Serializable {
+public class ProductDetails extends AbstractBaseDTO {
 
 	private static final long serialVersionUID = 1963874875184557520L;
 

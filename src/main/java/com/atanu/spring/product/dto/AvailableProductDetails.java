@@ -3,13 +3,10 @@
  */
 package com.atanu.spring.product.dto;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author Atanu Bhowmick
@@ -17,10 +14,9 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvailableProductDetails implements Serializable {
+public class AvailableProductDetails extends AbstractBaseDTO {
 
 	private static final long serialVersionUID = 5588204732117103617L;
 
