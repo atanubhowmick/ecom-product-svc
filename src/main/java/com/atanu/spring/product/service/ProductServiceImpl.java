@@ -21,7 +21,6 @@ import com.atanu.spring.product.annotation.LogMethodCall;
 import com.atanu.spring.product.constant.ErrorCode;
 import com.atanu.spring.product.constant.ProductConstant;
 import com.atanu.spring.product.constant.StatusEnum;
-import com.atanu.spring.product.dto.AvailableProductDetails;
 import com.atanu.spring.product.dto.BrandDetails;
 import com.atanu.spring.product.dto.CategoryDetails;
 import com.atanu.spring.product.dto.ColourDetails;
@@ -139,9 +138,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 		}
 		if (null != entity.getAvailableProductCount()) {
 			AvailableProductEntity availableProductEntity = entity.getAvailableProductCount();
-			AvailableProductDetails availableProductDetails = new AvailableProductDetails(
-					availableProductEntity.getProductId(), availableProductEntity.getProductCount());
-			product.setAvailableProductDetails(availableProductDetails);
+			product.setAvailableProductCount(availableProductEntity.getProductCount());
 		}
 		return product;
 	}
