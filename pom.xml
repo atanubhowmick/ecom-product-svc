@@ -124,6 +124,7 @@
 		</dependencies>
 	</dependencyManagement>
 	
+	<!-- Profiles -->
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -132,7 +133,7 @@
 			</activation>
 			<properties>
 				<server.port>0</server.port>
-				<boot.profile>dev</boot.profile>
+				<active.profile>dev</active.profile>
 				<eureka.defaultzone>http://127.0.0.1:8085/eureka/</eureka.defaultzone>
 				<instance.ip>127.0.0.1</instance.ip>
 			</properties>
@@ -140,8 +141,8 @@
 		<profile>
 			<id>docker</id>
 			<properties>
-				<server.port>0</server.port>
-				<boot.profile>docker</boot.profile>
+				<server.port>8091</server.port>
+				<active.profile>docker</active.profile>
 				<eureka.defaultzone>http://172.17.0.1:8085/eureka/</eureka.defaultzone>
 				<instance.ip>172.17.0.1</instance.ip>
 			</properties>
@@ -163,6 +164,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		
 		<resources>
 			<!-- https://examples.javacodegeeks.com/enterprise-java/spring/loading-environment-specific-configurations-properties-spring-using-maven-profiles-xml-settings-file-example -->
 			<resource>

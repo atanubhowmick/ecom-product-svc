@@ -18,12 +18,12 @@ import com.atanu.spring.product.dto.GenericResponse;
  *
  */
 @ControllerAdvice
-public class ProductExceptionHandler {
+public class GlobalExceptionHandler {
 
 	private static final String UNEXPECTED_ERROR_CODE = "PE500";
 	private static final String UNEXPECTED_ERROR_MSG = "Internal Server Error. Please try again later!";
 
-	private static final Logger logger = LoggerFactory.getLogger(ProductExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	/**
 	 * Method to handle {@link ProductException} and return error response
@@ -35,7 +35,8 @@ public class ProductExceptionHandler {
 	public ResponseEntity<GenericResponse<?>> handleProductException(ProductException ex) {
 		logger.error("Handling Product Exception... ", ex);
 		ErrorResponse error = new ErrorResponse(ex.getErrorCode(), ex.getErrorMessage(), ex.getHttpStatus());
-		GenericResponse<?> response = new GenericResponse<>(false, null, error);
+		GenericResponse<?> response = new GenericResponse<>();
+		response.setError(error);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -50,7 +51,8 @@ public class ProductExceptionHandler {
 		logger.error("Handling Exception... ", ex);
 		ErrorResponse error = new ErrorResponse(UNEXPECTED_ERROR_CODE, UNEXPECTED_ERROR_MSG,
 				HttpStatus.INTERNAL_SERVER_ERROR);
-		GenericResponse<?> response = new GenericResponse<>(false, null, error);
+		GenericResponse<?> response = new GenericResponse<>();
+		response.setError(error);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
