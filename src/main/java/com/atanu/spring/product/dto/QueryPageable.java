@@ -3,6 +3,7 @@
  */
 package com.atanu.spring.product.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,9 +41,9 @@ public class QueryPageable extends AbstractBaseDTO {
 
 	private Integer page = 0;
 	private Integer size = 10;
-	private List<QueryOrder> orders;
-	private List<QueryFilter> filters;
-	private List<QuerySearch> searches;
+	private List<QueryOrder> orders = new ArrayList<>();
+	private List<QueryFilter> filters = new ArrayList<>();
+	private List<QuerySearch> searches = new ArrayList<>();
 
 	/**
 	 * Constructor
@@ -56,8 +57,8 @@ public class QueryPageable extends AbstractBaseDTO {
 	}
 
 	/**
-	 * Constructor 
-	 *  
+	 * Constructor
+	 * 
 	 * @param page
 	 * @param size
 	 * @param orders

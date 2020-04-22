@@ -5,7 +5,7 @@ INSERT INTO PRODUCT_DETAILS VALUES (3, 'HP Pavillion 450', '16 GB RAM, 1 TB MVME
 INSERT INTO PRODUCT_DETAILS VALUES (4, 'Lenevo LP100', '8 GB RAM, 1 TB Mechenical HDD, Ryzen 5 (AMD)', 55000.00, '15.6 Inch', 8, 6, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (5, 'JBL H300', 'JBL H300 Headphone with extra Bass - Purple', 799.00, 'SMALL', 6, 5, 4, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (6, 'Sony XT500', 'Sony Headpone XT500 with noise cancellation', 799.00, 'SMALL', 5, 5, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
-INSERT INTO PRODUCT_DETAILS VALUES (7, 'Sony XL200', 'Sony Headpone XL200 bluetooth headphone', 799.00, 'SMALL', 6, 5, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
+INSERT INTO PRODUCT_DETAILS VALUES (7, 'Sony XL200', 'Sony Headpone XL200 bluetooth headphone', 799.00, 'SMALL', 5, 5, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (8, 'Redmi Note-8 Pro', '8 GB RAM, 16 GB Memory, 48MP Camera', 18000.00, '12 CM', 2, 1, 1, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (9, 'Lenovo K8', '4 GB RAM, 32 GB Memory, 48MP Camera', 14000.00, '10 CM', 8, 1, 1, 'Y', 1001, NOW(), 1001, NOW(), 1);
 INSERT INTO PRODUCT_DETAILS VALUES (10, 'Buffalo Casual Shirt', 'Buffalo Men Casual shirt', 1000.00, '80 CM', 4, 2, 3, 'Y', 1001, NOW(), 1001, NOW(), 1);
