@@ -85,7 +85,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 		IMap<String, Page<ProductDetails>> productCacheMap = hazelcastInstance
 				.getMap(ProductConstant.PRODUCT_SEARCH_CACHE_MAP_KEY);
-		String queryString = ProductUtil.writeValue(queryPageable);
+		String queryString = ProductUtil.toJson(queryPageable);
 		logger.debug("Query String : {}", queryString);
 		if (!StringUtils.isEmpty(queryString) && productCacheMap.containsKey(queryString)) {
 			logger.debug("Search result found in Product cache. Retrieveing from the cache..");

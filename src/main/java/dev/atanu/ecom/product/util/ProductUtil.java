@@ -42,7 +42,7 @@ public class ProductUtil {
 	 * @param clazz
 	 * @return T
 	 */
-	public static <T> T readValue(String json, Class<T> clazz) {
+	public static <T> T toObject(String json, Class<T> clazz) {
 		T t = null;
 		try {
 			t = mapper.readValue(json, clazz);
@@ -59,7 +59,7 @@ public class ProductUtil {
 	 * @param typeReference
 	 * @return T
 	 */
-	public static <T> T readValue(String json, TypeReference<T> typeReference) {
+	public static <T> T toObject(String json, TypeReference<T> typeReference) {
 		T t = null;
 		try {
 			t = mapper.readValue(json, typeReference);
@@ -75,7 +75,7 @@ public class ProductUtil {
 	 * @param object
 	 * @return
 	 */
-	public static String writeValue(Object object) {
+	public static String toJson(Object object) {
 		String str = ProductConstant.EMPTY_STRING;
 		try {
 			str = mapper.writeValueAsString(object);
