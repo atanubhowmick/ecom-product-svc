@@ -8,10 +8,10 @@
 		<version>2.2.6.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.atanu.spring</groupId>
-	<artifactId>product-svc</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>product-svc</name>
+	<groupId>dev.atanu.ecom</groupId>
+	<artifactId>ecom-product-svc</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>ecom-product-svc</name>
 	<description>Product Service</description>
 
 	<properties>
