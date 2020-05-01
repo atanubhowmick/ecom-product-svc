@@ -15,7 +15,7 @@ import dev.atanu.ecom.product.constant.ProductConstant;
  * @author Atanu Bhowmick
  *
  */
-public class ProductAuditAware implements AuditorAware<Long>{
+public class EcomAuditAware implements AuditorAware<Long>{
 
 	@Override
 	public Optional<Long> getCurrentAuditor() {

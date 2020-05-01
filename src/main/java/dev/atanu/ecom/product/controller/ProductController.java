@@ -54,7 +54,7 @@ public class ProductController {
 	}
 
 	@ApiOperation(value = "Search and Filter Product", response = GenericResponse.class)
-	@PostMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/view", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<?>> productsBySpecification(
 			@ApiParam(value = "Indicator if list is required", required = false) @RequestParam(value = "isListRequired", required = false) boolean isListRequired,
 			@ApiParam(value = "Provide QueryPageable with Filters/Searches", required = true) @RequestBody QueryPageable queryPageable) {

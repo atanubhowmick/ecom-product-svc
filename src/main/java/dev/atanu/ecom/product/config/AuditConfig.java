@@ -9,7 +9,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
- * JPA Auditing enabled. Now exposing {@link ProductAuditAware} as
+ * JPA Auditing enabled. Now exposing {@link EcomAuditAware} as
  * {@link AuditorAware} bean
  * 
  * @author Atanu Bhowmick
@@ -21,10 +21,10 @@ public class AuditConfig {
 
 	/**
 	 * 
-	 * @return {@link ProductAuditAware}
+	 * @return {@link EcomAuditAware}
 	 */
 	@Bean
 	public AuditorAware<Long> auditorProvider() {
-		return new ProductAuditAware();
+		return new EcomAuditAware();
 	}
 }
