@@ -22,6 +22,4 @@ public class ProjectBuildDetails extends AbstractBaseDTO {
 
 	private String projectVersion;
 	private String buildNumber;
-	
-
 }
