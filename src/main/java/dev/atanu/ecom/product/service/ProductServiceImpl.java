@@ -201,12 +201,31 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 	 * @return ProductEntity
 	 */
 	private ProductEntity getProductEntity(ProductDetails product) {
-		ProductEntity entity = new ProductEntity();
+		ProductEntity entity = null;
+		
+		// Update entity if already exist
+		if (null != product.getProductId()) {
+			entity = productRepository.findByProductIdAndActiveStatus(product.getProductId(),
+					StatusEnum.ACTIVE.getValue());
+			if (null != entity) {
+				AvailableProductEntity availableProduct = entity.getAvailableProductCount();
+				availableProduct
+						.setProductCount(availableProduct.getProductCount() + product.getAvailableProductCount());
+				entity.setAvailableProductCount(availableProduct);
+			}
+		}
+		
+		// If not exist create new product
+		if(null == entity) {
+			entity = new ProductEntity();
+		}
+		
 		entity.setProductName(product.getProductName());
 		entity.setProductDesc(product.getProductDesc());
 		entity.setProductSize(product.getProductSize());
 		entity.setProductPrice(product.getProductPrice());
-
+		entity.setActiveStatus(StatusEnum.ACTIVE.getValue());
+		
 		// Save Brand Details
 		entity.setBrandEntity(this.getBrandEntity(product.getBrandDetails()));
 
@@ -217,25 +236,11 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		entity.setColourEntity(this.getColourEntity(product.getColourDetails()));
 
 		// Save available product details
-		AvailableProductEntity availableProductEntity = new AvailableProductEntity(product.getProductId(),
-				product.getAvailableProductCount());
-		availableProductEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
-		entity.setAvailableProductCount(availableProductEntity);
-
-		entity.setActiveStatus(StatusEnum.ACTIVE.getValue());
-
-		// Update entity if already exist
-		if (null != product.getProductId()) {
-			ProductEntity savedEntity = productRepository.findByProductIdAndActiveStatus(product.getProductId(),
-					StatusEnum.ACTIVE.getValue());
-			if (null != savedEntity) {
-				entity.setProductId(savedEntity.getProductId());
-				entity.setVersion(savedEntity.getVersion());
-				AvailableProductEntity availableProduct = savedEntity.getAvailableProductCount();
-				availableProduct
-						.setProductCount(availableProduct.getProductCount() + product.getAvailableProductCount());
-				entity.setAvailableProductCount(availableProduct);
-			}
+		if(null == entity.getAvailableProductCount()) {
+			AvailableProductEntity availableProductEntity = new AvailableProductEntity(product.getProductId(),
+					product.getAvailableProductCount());
+			availableProductEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
+			entity.setAvailableProductCount(availableProductEntity);
 		}
 
 		return entity;
