@@ -209,10 +209,10 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 
 		// Save Brand Details
 		entity.setBrandEntity(this.getBrandEntity(product.getBrandDetails()));
-		
+
 		// Save Category Details
 		entity.setCategoryEntity(this.getCategoryEntity(product.getCategoryDetails()));
-		
+
 		// Save Colour Details
 		entity.setColourEntity(this.getColourEntity(product.getColourDetails()));
 
@@ -228,11 +228,14 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		if (null != product.getProductId()) {
 			ProductEntity savedEntity = productRepository.findByProductIdAndActiveStatus(product.getProductId(),
 					StatusEnum.ACTIVE.getValue());
-			entity.setProductId(savedEntity.getProductId());
-			entity.setVersion(savedEntity.getVersion());
-			AvailableProductEntity availableProduct = savedEntity.getAvailableProductCount();
-			availableProduct.setProductCount(availableProduct.getProductCount() + product.getAvailableProductCount());
-			entity.setAvailableProductCount(availableProduct);
+			if (null != savedEntity) {
+				entity.setProductId(savedEntity.getProductId());
+				entity.setVersion(savedEntity.getVersion());
+				AvailableProductEntity availableProduct = savedEntity.getAvailableProductCount();
+				availableProduct
+						.setProductCount(availableProduct.getProductCount() + product.getAvailableProductCount());
+				entity.setAvailableProductCount(availableProduct);
+			}
 		}
 
 		return entity;
@@ -244,14 +247,18 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 	 * @return BrandEntity
 	 */
 	private BrandEntity getBrandEntity(BrandDetails brand) {
-		BrandEntity brandEntity = new BrandEntity(brand.getBrandId(), brand.getBrandName(), brand.getBrandDesc());
-		brandEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
+		BrandEntity brandEntity = null;
 		if (null != brand.getBrandId()) {
-			BrandEntity savedEntity = brandRepository.findByBrandIdAndActiveStatus(brand.getBrandId(),
+			brandEntity = brandRepository.findByBrandIdAndActiveStatus(brand.getBrandId(),
 					StatusEnum.ACTIVE.getValue());
-			brandEntity.setVersion(savedEntity.getVersion());
-			brandEntity.setCreatedBy(savedEntity.getCreatedBy());
-			brandEntity.setCreatedDate(savedEntity.getCreatedDate());
+			if(null != brandEntity) {
+				brandEntity.setBrandName(brand.getBrandName());
+				brandEntity.setBrandDesc(brand.getBrandDesc());
+			}
+		}
+		if(null == brandEntity) {
+			brandEntity = new BrandEntity(brand.getBrandId(), brand.getBrandName(), brand.getBrandDesc());
+			brandEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
 		}
 		return brandEntity;
 	}
@@ -262,14 +269,17 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 	 * @return CategoryEntity
 	 */
 	private CategoryEntity getCategoryEntity(CategoryDetails category) {
-		CategoryEntity categoryEntity = new CategoryEntity(category.getCategoryId(), category.getCategoryName());
-		categoryEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
+		CategoryEntity categoryEntity = null;
 		if (null != category.getCategoryId()) {
-			CategoryEntity savedEntity = categoryRepository.findByCategoryIdAndActiveStatus(category.getCategoryId(),
+			categoryEntity = categoryRepository.findByCategoryIdAndActiveStatus(category.getCategoryId(),
 					StatusEnum.ACTIVE.getValue());
-			categoryEntity.setVersion(savedEntity.getVersion());
-			categoryEntity.setCreatedBy(savedEntity.getCreatedBy());
-			categoryEntity.setCreatedDate(savedEntity.getCreatedDate());
+			if(null != categoryEntity) {
+				categoryEntity.setCategoryName(category.getCategoryName());
+			}
+		}
+		if(null == categoryEntity) {
+			categoryEntity = new CategoryEntity(category.getCategoryId(), category.getCategoryName());
+			categoryEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
 		}
 		return categoryEntity;
 	}
@@ -280,14 +290,17 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 	 * @return ColourEntity
 	 */
 	private ColourEntity getColourEntity(ColourDetails colour) {
-		ColourEntity colourEntity = new ColourEntity(colour.getColourId(), colour.getColourName());
-		colourEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
+		ColourEntity colourEntity = null;
 		if (null != colour.getColourId()) {
-			ColourEntity savedEntity = colourRepository.findByColourIdAndActiveStatus(colour.getColourId(),
+			colourEntity = colourRepository.findByColourIdAndActiveStatus(colour.getColourId(),
 					StatusEnum.ACTIVE.getValue());
-			colourEntity.setVersion(savedEntity.getVersion());
-			colourEntity.setCreatedBy(savedEntity.getCreatedBy());
-			colourEntity.setCreatedDate(savedEntity.getCreatedDate());
+			if(null != colourEntity) {
+				colourEntity.setColourName(colour.getColourName());
+			}
+		}
+		if(null == colourEntity) {
+			colourEntity = new ColourEntity(colour.getColourId(), colour.getColourName());
+			colourEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
 		}
 		return colourEntity;
 	}

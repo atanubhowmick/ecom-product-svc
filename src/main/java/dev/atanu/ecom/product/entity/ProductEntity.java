@@ -53,7 +53,7 @@ public class ProductEntity extends BaseEntity {
 
 	@Column(name = "PRODUCT_PRICE")
 	private Double productPrice;
-	
+
 	@Column(name = "PRODUCT_SIZE")
 	private String productSize;
 
