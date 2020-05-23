@@ -57,15 +57,15 @@ public class ProductEntity extends BaseEntity {
 	@Column(name = "PRODUCT_SIZE")
 	private String productSize;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "BRAND_ID")
 	private BrandEntity brandEntity;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "CATEGORY_ID")
 	private CategoryEntity categoryEntity;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "COLOUR_ID")
 	private ColourEntity colourEntity;
 

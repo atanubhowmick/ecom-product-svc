@@ -11,7 +11,7 @@ import java.util.List;
  * @author Atanu Bhowmick
  *
  */
-public interface BaseService<T, K> {
+public interface BaseService<T, K, D extends Enum<?>> {
 
 	/**
 	 * Find by Id
@@ -27,5 +27,29 @@ public interface BaseService<T, K> {
 	 * @return List of T
 	 */
 	List<T> getAll();
+
+	/**
+	 * Create
+	 * 
+	 * @param t
+	 * @return
+	 */
+	T create(T t);
+
+	/**
+	 * Create Multiple
+	 * 
+	 * @param ts
+	 * @return
+	 */
+	List<T> create(List<T> ts);
+
+	/**
+	 * Delete
+	 * 
+	 * @param k
+	 * @return
+	 */
+	boolean delete(K k, D d);
 
 }

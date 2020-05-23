@@ -29,7 +29,7 @@ public class ProductServiceApplication {
 	@Bean
 	public ProjectBuildDetails getBuildNumber() {
 		ProjectBuildDetails details = new ProjectBuildDetails(projectVersion, buildNumber);
-		logger.error("This is not an error. Project Build Details : {}", details);
+		logger.info("Project Build Details : {}", details);
 		return details;
 	}
 

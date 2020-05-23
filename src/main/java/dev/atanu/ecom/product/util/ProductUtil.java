@@ -47,7 +47,7 @@ public class ProductUtil {
 		try {
 			t = mapper.readValue(json, clazz);
 		} catch (JsonProcessingException e) {
-			throw new ProductException(ErrorCode.PE006.name(), ErrorCode.PE006.getErrorMsg(), e);
+			throw new ProductException(ErrorCode.PRODUCT_E006.name(), ErrorCode.PRODUCT_E006.getErrorMsg(), e);
 		}
 		return t;
 	}
@@ -64,7 +64,7 @@ public class ProductUtil {
 		try {
 			t = mapper.readValue(json, typeReference);
 		} catch (JsonProcessingException e) {
-			throw new ProductException(ErrorCode.PE006.name(), ErrorCode.PE006.getErrorMsg(), e);
+			throw new ProductException(ErrorCode.PRODUCT_E006.name(), ErrorCode.PRODUCT_E006.getErrorMsg(), e);
 		}
 		return t;
 	}
