@@ -4,6 +4,7 @@
 package dev.atanu.ecom.product.service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface to provide search related operations
@@ -37,12 +38,12 @@ public interface BaseService<T, K, D extends Enum<?>> {
 	T create(T t);
 
 	/**
-	 * Create Multiple
+	 * Add available products
 	 * 
-	 * @param ts
+	 * @param t
 	 * @return
 	 */
-	List<T> create(List<T> ts);
+	Map<K, T> add(Map<K, Long> map);
 
 	/**
 	 * Delete

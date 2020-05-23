@@ -25,7 +25,7 @@ public class CategoryDetails extends AbstractBaseDTO {
 
 	private static final long serialVersionUID = -4723499017508681913L;
 
-	@ApiModelProperty(value = "Category Id", example = "")
+	@ApiModelProperty(value = "Category Id", example = "7")
 	private Long categoryId;
 	
 	@NotEmpty(message = "Category Name should not be empty")

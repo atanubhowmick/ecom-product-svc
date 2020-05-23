@@ -4,8 +4,10 @@
 package dev.atanu.ecom.product.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +48,7 @@ public class ProductController {
 	@ApiOperation(value = "Get Product by Id", response = GenericResponse.class)
 	@GetMapping(value = "/get-by-id/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<ProductDetails>> getProductById(
-			@ApiParam(value = "Provide Product Id to get Product Details", required = true) 
-			@PathVariable("product-id") Long productId) {
+			@ApiParam(value = "Product Id", required = true) @PathVariable("product-id") Long productId) {
 		ProductDetails product = productService.get(productId);
 		GenericResponse<ProductDetails> response = new GenericResponse<>(product);
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -81,8 +83,7 @@ public class ProductController {
 	@ApiOperation(value = "Create Product", response = GenericResponse.class)
 	@PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<ProductDetails>> createProduct(
-			@ApiParam(value = "Product Details", required = true) 
-			@Valid @RequestBody ProductDetails product) {
+			@ApiParam(value = "Product Details", required = true) @Valid @RequestBody ProductDetails product) {
 		ProductDetails productDetails = productService.create(product);
 		GenericResponse<ProductDetails> response = new GenericResponse<>(productDetails);
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -91,12 +92,20 @@ public class ProductController {
 	@ApiOperation(value = "Delete Product by Id", response = GenericResponse.class)
 	@DeleteMapping(value = "/delete/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<Boolean>> deleteProduct(
-			@ApiParam(value = "Product Id", required = true)
-			@PathVariable("product-id") Long productId,
-			@ApiParam(value = "Delete Type", required = true)
-			@RequestParam("delete-type") DeleteTypeEnum deleteType) {
+			@ApiParam(value = "Product Id", required = true) @PathVariable("product-id") Long productId,
+			@ApiParam(value = "Delete Type", required = true) @RequestParam("delete-type") DeleteTypeEnum deleteType) {
 		boolean isDeleted = productService.delete(productId, deleteType);
 		GenericResponse<Boolean> response = new GenericResponse<>(isDeleted);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Add available product count", response = GenericResponse.class)
+	@PutMapping(value = "/add-count", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponse<Map<Long, ProductDetails>>> addProductCount(
+			@NotEmpty(message = "Request Body can't be empty") 
+			@RequestBody Map<Long, Long> countMap) {
+		Map<Long, ProductDetails> productDetails = productService.add(countMap);
+		GenericResponse<Map<Long, ProductDetails>> response = new GenericResponse<>(productDetails);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

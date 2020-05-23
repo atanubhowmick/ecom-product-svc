@@ -3,11 +3,15 @@
  */
 package dev.atanu.ecom.product.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,15 +130,22 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		return pageProduct;
 	}
 
+	@Transactional
 	@Override
 	public ProductDetails create(ProductDetails product) {
 		ProductEntity entity = productRepository.save(this.getProductEntity(product));
 		return this.getProductDetails(entity);
 	}
 
+	@Transactional
 	@Override
-	public List<ProductDetails> create(List<ProductDetails> ts) {
-		return null;
+	public Map<Long, ProductDetails> add(Map<Long, Long> map) {
+		Map<Long, ProductDetails> updatedMap = new LinkedHashMap<>();
+		map.entrySet().stream().forEachOrdered(entry -> {
+			ProductDetails product = this.addQuantity(entry.getKey(), entry.getValue());
+			updatedMap.put(entry.getKey(), product);
+		});
+		return updatedMap;
 	}
 
 	@Override
@@ -202,7 +213,6 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 	 */
 	private ProductEntity getProductEntity(ProductDetails product) {
 		ProductEntity entity = null;
-		
 		// Update entity if already exist
 		if (null != product.getProductId()) {
 			entity = productRepository.findByProductIdAndActiveStatus(product.getProductId(),
@@ -214,18 +224,18 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 				entity.setAvailableProductCount(availableProduct);
 			}
 		}
-		
+
 		// If not exist create new product
-		if(null == entity) {
+		if (null == entity) {
 			entity = new ProductEntity();
 		}
-		
+
 		entity.setProductName(product.getProductName());
 		entity.setProductDesc(product.getProductDesc());
 		entity.setProductSize(product.getProductSize());
 		entity.setProductPrice(product.getProductPrice());
 		entity.setActiveStatus(StatusEnum.ACTIVE.getValue());
-		
+
 		// Save Brand Details
 		entity.setBrandEntity(this.getBrandEntity(product.getBrandDetails()));
 
@@ -236,7 +246,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		entity.setColourEntity(this.getColourEntity(product.getColourDetails()));
 
 		// Save available product details
-		if(null == entity.getAvailableProductCount()) {
+		if (null == entity.getAvailableProductCount()) {
 			AvailableProductEntity availableProductEntity = new AvailableProductEntity(product.getProductId(),
 					product.getAvailableProductCount());
 			availableProductEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
@@ -256,12 +266,12 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		if (null != brand.getBrandId()) {
 			brandEntity = brandRepository.findByBrandIdAndActiveStatus(brand.getBrandId(),
 					StatusEnum.ACTIVE.getValue());
-			if(null != brandEntity) {
+			if (null != brandEntity) {
 				brandEntity.setBrandName(brand.getBrandName());
 				brandEntity.setBrandDesc(brand.getBrandDesc());
 			}
 		}
-		if(null == brandEntity) {
+		if (null == brandEntity) {
 			brandEntity = new BrandEntity(brand.getBrandId(), brand.getBrandName(), brand.getBrandDesc());
 			brandEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
 		}
@@ -278,11 +288,11 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		if (null != category.getCategoryId()) {
 			categoryEntity = categoryRepository.findByCategoryIdAndActiveStatus(category.getCategoryId(),
 					StatusEnum.ACTIVE.getValue());
-			if(null != categoryEntity) {
+			if (null != categoryEntity) {
 				categoryEntity.setCategoryName(category.getCategoryName());
 			}
 		}
-		if(null == categoryEntity) {
+		if (null == categoryEntity) {
 			categoryEntity = new CategoryEntity(category.getCategoryId(), category.getCategoryName());
 			categoryEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
 		}
@@ -299,14 +309,35 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 		if (null != colour.getColourId()) {
 			colourEntity = colourRepository.findByColourIdAndActiveStatus(colour.getColourId(),
 					StatusEnum.ACTIVE.getValue());
-			if(null != colourEntity) {
+			if (null != colourEntity) {
 				colourEntity.setColourName(colour.getColourName());
 			}
 		}
-		if(null == colourEntity) {
+		if (null == colourEntity) {
 			colourEntity = new ColourEntity(colour.getColourId(), colour.getColourName());
 			colourEntity.setActiveStatus(StatusEnum.ACTIVE.getValue());
 		}
 		return colourEntity;
+	}
+
+	/**
+	 * Add available count
+	 * 
+	 * @param productId
+	 * @param count
+	 * @return ProductDetails
+	 */
+	private ProductDetails addQuantity(Long productId, Long count) {
+		ProductEntity entity = productRepository.findByProductIdAndActiveStatus(productId,
+				StatusEnum.ACTIVE.getValue());
+		if (null == entity) {
+			throw new ProductException(ErrorCode.PRODUCT_E001.name(), "No Product found with Id : " + productId,
+					HttpStatus.NOT_FOUND);
+		}
+		AvailableProductEntity availableProduct = entity.getAvailableProductCount();
+		availableProduct.setProductCount(availableProduct.getProductCount() + count);
+		entity.setAvailableProductCount(availableProduct);
+		ProductEntity savedEntity = productRepository.saveAndFlush(entity);
+		return this.getProductDetails(savedEntity);
 	}
 }
