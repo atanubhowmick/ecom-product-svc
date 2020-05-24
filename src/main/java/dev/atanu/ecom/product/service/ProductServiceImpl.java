@@ -120,7 +120,7 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 					HttpStatus.NOT_FOUND);
 		}
 		List<ProductDetails> products = page.stream().map(e -> this.getProductDetails(e)).collect(Collectors.toList());
-		Page<ProductDetails> pageProduct = new PageImpl<>(products, queryPageable.getPageable(), products.size());
+		Page<ProductDetails> pageProduct = new PageImpl<>(products, page.getPageable(), page.getTotalElements());
 
 		// Save the search in cache for 10 minutes
 		productCacheMap.lock(queryString);
