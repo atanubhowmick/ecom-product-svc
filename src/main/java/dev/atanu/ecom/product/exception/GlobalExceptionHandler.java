@@ -11,6 +11,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -74,7 +75,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<GenericResponse<?>> handleConstraintViolationException(ConstraintViolationException ex) {
-		logger.error("Handling MethodArgumentNotValidException... ", ex);
+		logger.error("Handling ConstraintViolationException... ", ex);
 		Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
 		Optional<ConstraintViolation<?>> violation = violations.stream().findFirst();
 		ErrorResponse error = null;
@@ -86,6 +87,32 @@ public class GlobalExceptionHandler {
 					HttpStatus.BAD_REQUEST);
 		}
 
+		GenericResponse<?> response = new GenericResponse<>();
+		response.setError(error);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<GenericResponse<?>> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+		logger.error("Handling DataIntegrityViolationException... ", e);
+		ErrorResponse error = null;
+		if(e.getCause() instanceof org.hibernate.exception.ConstraintViolationException ) {
+			org.hibernate.exception.ConstraintViolationException ex = (org.hibernate.exception.ConstraintViolationException) e.getCause();
+			if(ex.getConstraintName().contains("UNIQUE_BRAND_NAME")) {
+				error = new ErrorResponse(ErrorCode.PRODUCT_E008.name(), "Brand Name already exist",
+						HttpStatus.BAD_REQUEST);
+			} else if(ex.getConstraintName().contains("UNIQUE_CATEGORY_NAME")) {
+				error = new ErrorResponse(ErrorCode.PRODUCT_E008.name(), "Category Name already exist",
+						HttpStatus.BAD_REQUEST);
+			} else if(ex.getConstraintName().contains("UNIQUE_COLOUR_NAME")) {
+				error = new ErrorResponse(ErrorCode.PRODUCT_E008.name(), "Colour Name already exist",
+						HttpStatus.BAD_REQUEST);
+			}
+		}
+		if(error == null) {
+			error = new ErrorResponse(ErrorCode.PRODUCT_E008.name(), ErrorCode.PRODUCT_E008.getErrorMsg(),
+					HttpStatus.BAD_REQUEST);
+		}
 		GenericResponse<?> response = new GenericResponse<>();
 		response.setError(error);
 		return new ResponseEntity<>(response, HttpStatus.OK);

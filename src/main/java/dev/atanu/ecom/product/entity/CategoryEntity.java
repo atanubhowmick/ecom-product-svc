@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +34,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "CATEGORY_DETAILS")
+@Table(name = "CATEGORY_DETAILS", uniqueConstraints = {
+		@UniqueConstraint(name = "UNIQUE_CATEGORY_NAME", columnNames = "CATEGORY_NAME") })
 public class CategoryEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -4723499017508681913L;
