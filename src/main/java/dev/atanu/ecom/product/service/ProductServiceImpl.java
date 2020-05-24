@@ -27,7 +27,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
 import dev.atanu.ecom.product.annotation.LogMethodCall;
-import dev.atanu.ecom.product.constant.DeleteTypeEnum;
 import dev.atanu.ecom.product.constant.ErrorCode;
 import dev.atanu.ecom.product.constant.ProductConstant;
 import dev.atanu.ecom.product.constant.StatusEnum;
@@ -58,7 +57,7 @@ import dev.atanu.ecom.product.util.ProductUtil;
  */
 @LogMethodCall(showParams = true, showResult = true)
 @Service
-public class ProductServiceImpl implements SearchService<ProductDetails, Long, DeleteTypeEnum> {
+public class ProductServiceImpl implements SearchService<ProductDetails, Long> {
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -149,8 +148,8 @@ public class ProductServiceImpl implements SearchService<ProductDetails, Long, D
 	}
 
 	@Override
-	public boolean delete(Long id, DeleteTypeEnum d) {
-		if (DeleteTypeEnum.SOFT.equals(d)) {
+	public boolean delete(Long id, DeleteTypeEnum deleteType) {
+		if (DeleteTypeEnum.SOFT.equals(deleteType)) {
 			ProductEntity entity = productRepository.findByProductIdAndActiveStatus(id, StatusEnum.ACTIVE.getValue());
 			if (Objects.isNull(entity)) {
 				throw new ProductException(ErrorCode.PRODUCT_E001.name(), ErrorCode.PRODUCT_E001.getErrorMsg(),

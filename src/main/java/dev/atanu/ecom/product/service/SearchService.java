@@ -20,7 +20,7 @@ import dev.atanu.ecom.product.repository.QueryPageableSpecification;
  * @author Atanu Bhowmick
  *
  */
-public interface SearchService<T, K, D extends Enum<?>> extends BaseService<T, K, D> {
+public interface SearchService<T, K> extends BaseService<T, K> {
 
 	/**
 	 * This method provides Filter and Search functionalities by

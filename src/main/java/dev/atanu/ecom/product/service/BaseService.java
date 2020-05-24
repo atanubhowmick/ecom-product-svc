@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Atanu Bhowmick
  *
  */
-public interface BaseService<T, K, D extends Enum<?>> {
+public interface BaseService<T, K> {
 
 	/**
 	 * Find by Id
@@ -51,6 +51,15 @@ public interface BaseService<T, K, D extends Enum<?>> {
 	 * @param k
 	 * @return
 	 */
-	boolean delete(K k, D d);
+	boolean delete(K k, DeleteTypeEnum deleteType);
+	
+	/**
+	 * Enum to represent the delete type
+	 *
+	 */
+	public enum DeleteTypeEnum {
+		SOFT,
+		HARD;
+	}
 
 }

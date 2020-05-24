@@ -25,15 +25,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.atanu.ecom.product.constant.DeleteTypeEnum;
 import dev.atanu.ecom.product.dto.GenericResponse;
 import dev.atanu.ecom.product.dto.ProductDetails;
 import dev.atanu.ecom.product.dto.QueryPageable;
+import dev.atanu.ecom.product.service.BaseService.DeleteTypeEnum;
 import dev.atanu.ecom.product.service.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
+ * Controller to Provide APIs to perform CRUD operation for products.
+ * Also provide search functionality using {@link QueryPageable} object.
+ * 
  * @author Atanu Bhowmick
  *
  */
@@ -43,8 +46,14 @@ import io.swagger.annotations.ApiParam;
 public class ProductController {
 
 	@Autowired
-	private SearchService<ProductDetails, Long, DeleteTypeEnum> productService;
+	private SearchService<ProductDetails, Long> productService;
 
+	/**
+	 * API to find product by Product Id
+	 * 
+	 * @param productId
+	 * @return {@link ProductDetails}
+	 */
 	@ApiOperation(value = "Get Product by Id", response = GenericResponse.class)
 	@GetMapping(value = "/get-by-id/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<ProductDetails>> getProductById(
@@ -54,6 +63,11 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	/**
+	 * API to get all products
+	 * 
+	 * @return List of ProductDetails
+	 */
 	@ApiOperation(value = "Get All Products", response = GenericResponse.class)
 	@GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<List<ProductDetails>>> getAllProducts() {
@@ -62,6 +76,15 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	/**
+	 * API to provide view/search/filter functionality for Product.
+	 * isListRequired param to return the search result in list.
+	 * Otherwise it will return in a page.
+	 * 
+	 * @param isListRequired
+	 * @param queryPageable
+	 * @return Page of ProductDetails
+	 */
 	@ApiOperation(value = "Search and Filter Product", response = GenericResponse.class)
 	@PostMapping(value = "/view", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<?>> productsBySpecification(
@@ -80,6 +103,12 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	/**
+	 * API to create Product
+	 * 
+	 * @param product
+	 * @return saved {@link ProductDetails}
+	 */
 	@ApiOperation(value = "Create Product", response = GenericResponse.class)
 	@PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<ProductDetails>> createProduct(
@@ -89,16 +118,12 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Delete Product by Id", response = GenericResponse.class)
-	@DeleteMapping(value = "/delete/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponse<Boolean>> deleteProduct(
-			@ApiParam(value = "Product Id", required = true) @PathVariable("product-id") Long productId,
-			@ApiParam(value = "Delete Type", required = true) @RequestParam("delete-type") DeleteTypeEnum deleteType) {
-		boolean isDeleted = productService.delete(productId, deleteType);
-		GenericResponse<Boolean> response = new GenericResponse<>(isDeleted);
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
+	/**
+	 * API to add the available count to specific products by the sellers.
+	 * 
+	 * @param countMap
+	 * @return Map of Updated ProductDetails
+	 */
 	@ApiOperation(value = "Add available product count", response = GenericResponse.class)
 	@PutMapping(value = "/add-count", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponse<Map<Long, ProductDetails>>> addProductCount(
@@ -106,6 +131,23 @@ public class ProductController {
 			@RequestBody Map<Long, Long> countMap) {
 		Map<Long, ProductDetails> productDetails = productService.add(countMap);
 		GenericResponse<Map<Long, ProductDetails>> response = new GenericResponse<>(productDetails);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	/**
+	 * API to Delete product by Product Id
+	 * 
+	 * @param productId
+	 * @param deleteType
+	 * @return boolean
+	 */
+	@ApiOperation(value = "Delete Product by Id", response = GenericResponse.class)
+	@DeleteMapping(value = "/delete/{product-id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponse<Boolean>> deleteProduct(
+			@ApiParam(value = "Product Id", required = true) @PathVariable("product-id") Long productId,
+			@ApiParam(value = "Delete Type", required = true) @RequestParam("delete-type") DeleteTypeEnum deleteType) {
+		boolean isDeleted = productService.delete(productId, deleteType);
+		GenericResponse<Boolean> response = new GenericResponse<>(isDeleted);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
