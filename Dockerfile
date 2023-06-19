@@ -2,13 +2,13 @@
 FROM openjdk:8
 
 # Refer to Maven build -> finalName
-ARG JAR_FILE=target/product-svc-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/ecom-product-svc-1.0.0.jar
 
 # cd /opt/app
 WORKDIR /opt/app
 
-# cp target/gateway-server.jar /opt/app/gateway-server.jar
-COPY ${JAR_FILE} product-svc-0.0.1-SNAPSHOT.jar
+# cp target/ecom-product-svc-1.0.0.jar /opt/app/ecom-product-svc-1.0.0.jar
+COPY ${JAR_FILE} ecom-product-svc-1.0.0.jar
 
 # java -jar /opt/app/gateway-server.jar
-ENTRYPOINT ["java","-jar","product-svc-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","ecom-product-svc-1.0.0.jar"]
